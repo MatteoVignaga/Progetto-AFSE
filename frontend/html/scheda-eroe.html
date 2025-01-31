@@ -1,0 +1,280 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title id="titolo-pagina"></title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+
+        .scrollable-text {
+            max-height: 180px; /* Adjust the height as needed */
+            overflow-y: auto;
+        }
+
+        #comics-container, #serie-container, #event-container {
+            overflow-x: auto;
+        }
+
+        .d-flex::-webkit-scrollbar-thumb, .scrollable-text::-webkit-scrollbar-thumb {
+            background-color: rgb(237, 53, 53);
+            border-radius: 1rem;
+        }
+
+        .d-flex::-webkit-scrollbar-track, .scrollable-text::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 1rem;
+        }
+
+        .d-flex::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .scrollable-text::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .d-flex::-webkit-scrollbar-thumb:hover, .scrollable-text::-webkit-scrollbar-thumb:hover {
+            background: #b10505;
+        }
+
+        @media (max-width: 768px) {
+            #comic-card, #serie-card, #event-card  {
+                min-width: 100% !important;
+            }
+            #thumbnail-comic, #thumbnail-serie, #thumbnail-event {
+                height: auto !important;
+            }
+            .card-body {
+                padding: 1rem !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="navbar-container" style="border-color: rgb(0, 255, 38);">
+        <!-- Navbar -->
+        <script src="../javascript/new-navbar.js"></script>
+    </div>
+
+    <div class="container p-2">
+
+        <div class="row">
+            <div class="col-md-4 p-3">
+                <img id="thumbnail-eroe" class="img-fluid object-fit-cover border border-3 border-black rounded" src="" alt="">
+            </div>
+            <div class="col-md-8 p-3">
+                <div id="info-eroe" class="border border-3 border-black rounded h-100 p-3">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item" id="nome-eroe">An item</li>
+                        <li class="list-group-item scrollable-text" id="descrizione-eroe">A second item with a lot of text that will overflow and become scrollable. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!--TODO: metti classe d-none, da togliere solamente se l'utente possiede la carta nell'album-->
+        <div id="dettagli" class="d-none">
+            <div class="row p-3" id="comics-row">
+                <div class="col">
+                    <h1 class="display-6">Comics di cui fa parte</h1>
+                    
+                    <div id="comics-container" class="d-flex flex-nowrap gap-3">
+
+                        <div id="comic-card" class="card mb-3 flex-grow-1 d-none" style="min-width: 540px;">
+                            <div class="row g-0">
+                                <div class="col-md-4">
+                                    <img id="thumbnail-comic" src="" class="img-fluid rounded-start h-100 object-fit-cover" alt="thumbnail del comic">
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="card-body">
+                                        <h5 id="titolo-comic" class="card-title">Card title</h5>
+                                        <p id="descrizione-comic" class="card-text scrollable-text"></p>
+                                        <p id="data-comic" class="card-text"><small class="text-body-secondary"></small></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+    
+            <div class="row p-3">
+                <div class="col">
+                    <h1 class="display-6">Serie di cui fa parte</h1>
+
+                    <div id="serie-container" class="d-flex flex-nowrap gap-3">
+
+                        <div id="serie-card" class="card mb-3 flex-grow-1 d-none" style="min-width: 540px;">
+                            <div class="row g-0">
+                                <div class="col-md-4">
+                                    <img id="thumbnail-serie" src="" class="img-fluid rounded-start h-100 object-fit-cover" alt="thumbnail della serie">
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="card-body">
+                                        <h5 id="titolo-serie" class="card-title">Card title</h5>
+                                        <p id="descrizione-serie" class="card-text scrollable-text"></p>
+                                        <p id="data-serie" class="card-text"><small class="text-body-secondary"></small></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="row p-3">
+                <div class="col">
+                    <h1 class="display-6">Eventi di cui fa parte</h1>
+                </div>
+
+                <div id="event-container" class="d-flex flex-nowrap gap-3">
+
+                    <div id="event-card" class="card mb-3 flex-grow-1 d-none" style="min-width: 540px;">
+                        <div class="row g-0">
+                            <div class="col-md-4">
+                                <img id="thumbnail-event" src="" class="img-fluid rounded-start h-100 object-fit-cover" alt="thumbnail dell'evento">
+                            </div>
+                            <div class="col-md-8">
+                                <div class="card-body">
+                                    <h5 id="titolo-event" class="card-title">Card title</h5>
+                                    <p id="descrizione-event" class="card-text scrollable-text"></p>
+                                    <p id="data-event" class="card-text"><small class="text-body-secondary"></small></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+        
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+    <script src="../javascript/lib.js"></script>
+    <script>
+
+        var user = JSON.parse(localStorage.getItem("utente"));
+
+        var id_eroe = new URLSearchParams(window.location.search).get('id');
+        if (id_eroe == null) {
+            alert('Supereroe non trovato');
+            window.location.href = 'home.html';
+        }
+
+        var eroe = sessionStorage.getItem(`eroe-${id_eroe}`);
+        if (eroe) {
+            eroe = JSON.parse(eroe);
+            popolaPagina(eroe);
+        } else {
+            fetch(`http://localhost:3000/marvel-characters/${id_eroe}`)
+            .then(response => response.json())
+            .then(data => { 
+                eroe = data.data.results[0];
+                console.log(eroe);
+                sessionStorage.setItem(`eroe-${eroe.id}`, JSON.stringify(eroe));
+                popolaPagina(eroe);
+            })
+            .catch(error => console.error('Errore:', error));
+        }
+
+        function popolaPagina(eroe) {
+            document.getElementById('titolo-pagina').innerText = eroe.name;
+            document.getElementById('thumbnail-eroe').src = `${eroe.thumbnail.path}.${eroe.thumbnail.extension}`;
+            document.getElementById('nome-eroe').innerHTML = '<h2>' + eroe.name + '</h2>';
+            document.getElementById('descrizione-eroe').innerText = eroe.description;
+
+            if (user.album.some(card => card.id == parseInt(id_eroe))) {
+                document.getElementById('dettagli').classList.remove('d-none');
+
+                fetch(`http://localhost:3000/marvel-characters/${id_eroe}/comics`)
+                .then(response => response.json())
+                .then(data => popolaComics(data.data.results))
+                .catch(error => console.error("Errore nell\' ottenimento dei comics: ", error));
+
+                fetch(`http://localhost:3000/marvel-characters/${id_eroe}/series`)
+                .then(response => response.json())
+                .then(data => popolaSeries(data.data.results))
+                .catch(error => console.error("Errore nell\' ottenimento delle serie: ", error));
+
+                fetch(`http://localhost:3000/marvel-characters/${id_eroe}/events`)
+                .then(response => response.json())
+                .then(data => popolaEvents(data.data.results))
+                .catch(error => console.error("Errore nell\' ottenimento degli eventi: ", error));
+            }
+        }
+
+        function popolaComics(comics) {
+            var container = document.getElementById('comics-container');
+
+            if (comics.length == 0) {
+                container.innerHTML = '<p class="text-secondary">Non ci sono comics disponibili per questo eroe.</p>';
+            }
+
+            comics.forEach(comic => {
+                var card = document.getElementById('comic-card').cloneNode(true);
+                card.getElementsByClassName('card-title')[0].innerText = comic.title;
+                card.getElementsByClassName('card-text')[0].innerText = comic.description;
+                card.getElementsByClassName('card-text')[1].innerText = comic.dates[0].date;
+                card.getElementsByClassName('img-fluid')[0].src = `${comic.thumbnail.path}.${comic.thumbnail.extension}`;
+                card.classList.remove('d-none');
+                container.appendChild(card);
+            });
+            
+        }
+
+        function popolaSeries(series) {
+            var container = document.getElementById('serie-container');
+
+            if (series.length == 0) {
+                container.innerHTML = '<p class="text-secondary">Non ci sono serie disponibili per questo eroe.</p>';
+            }
+
+            series.forEach(serie => {
+                var card = document.getElementById('serie-card').cloneNode(true);
+                card.getElementsByClassName('card-title')[0].innerText = serie.title;
+                card.getElementsByClassName('card-text')[0].innerText = serie.description;
+                card.getElementsByClassName('card-text')[1].innerText = serie.startYear + ' - ' + serie.endYear;
+                card.getElementsByClassName('img-fluid')[0].src = `${serie.thumbnail.path}.${serie.thumbnail.extension}`;
+                card.classList.remove('d-none');
+                container.appendChild(card);
+            });
+            
+        }
+
+        function popolaEvents(events) {
+            var container = document.getElementById('event-container');
+
+            if (events.length == 0) {
+                container.innerHTML = '<p class="text-secondary">Non ci sono eventi disponibili per questo eroe.</p>';
+            }
+
+            events.forEach(event => {
+                var card = document.getElementById('event-card').cloneNode(true);
+                card.getElementsByClassName('card-title')[0].innerText = event.title;
+                card.getElementsByClassName('card-text')[0].innerText = event.description;
+                card.getElementsByClassName('card-text')[1].innerText = event.start + ' - ' + event.end;
+                card.getElementsByClassName('img-fluid')[0].src = `${event.thumbnail.path}.${event.thumbnail.extension}`;
+                card.classList.remove('d-none');
+                container.appendChild(card);
+            });
+            
+        }
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Mercato delle figurine</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+
+        .pack-background {
+            width: 300px;
+            height: 300px;
+            background-color: var(--secondary-color);
+        }
+
+        /*div {
+            border: 1px black solid;
+        }*/
+    </style>
+</head>
+
+<body>
+    
+    <div id="navbar-container">
+        <!-- Navbar -->
+        <script src="../javascript/new-navbar.js"></script>
+    </div>
+
+    <div class="container">
+         
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 d-flex justify-content-center p-3" id="contenitore-offerte-pacchetti">
+
+            <div class="col d-flex justify-content-center d-none" id="card-pacchetto">
+                <div class="card text-center mb-3 text-dark" style="width: 18rem; background-color: var(--secondary-color);">
+                    <img src="img/Common pack.png" class="card-img-top p-2" alt="pack" id="thumbnail">
+                    <div class="card-body">
+                        <h5 class="card-title" id="titolo-offerta">Special title treatment</h5>
+                        <p class="card-text d-none" id="descrizione-offerta">With supporting text below as a natural lead-in to additional content.</p>
+                        <button class="btn btn-danger" id="prezzo-button">5 crediti</button>
+                        <!-- data-bs-toggle="modal" data-bs-target="#carte-trovate" -->
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div>
+            <p class="text-secondary">*Una volta premuto il pulsante, attendi per la visualizzazione delle figurine ottenute.</p>
+        </div>
+        
+    </div>
+    
+    <!-- Modal -->
+    <div class="modal fade" id="carte-trovate" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Hai ottenuto:</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="row row-cols-3 row-cols-lg-5 g-2 justify-content-center" id="risultati-pacchetto">
+                        <div class="col d-none" id="card-figurina">
+                            <a href="" class="link-to-scheda">
+                                <div class="card card-animated h-100">
+                                    <img src="" class="card-img-top img-fluid object-fit-cover" alt="Icona">
+                                    <div class="card-img-overlay d-flex flex-column justify-content-end">
+                                        <h5 class="card-title text-align-bottom fs-6 fs-md-3 fs-lg-5 text-truncate m-0" id="nome-eroe"></h5>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Chiudi</button>
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Conferma</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+    <script src="../javascript/lib.js"></script>
+    <script>
+        var utente = JSON.parse(localStorage.getItem("utente"));
+        if (!utente) {
+            document.querySelectorAll('#prezzo-button').forEach(button => button.disabled = true);
+        }
+
+        fetch('http://localhost:3000/packs')
+        .then(response => response.json())
+        .then(packs => popolaPacchetti(packs))
+        .catch(error => console.error("Errore nella richiesta dei pacchetti."));
+
+        function popolaPacchetti(packs) {
+            console.log(packs);
+            var container = document.getElementById('contenitore-offerte-pacchetti');
+            var card = document.getElementById('card-pacchetto');
+
+            for (let pack of packs) {
+                var clone = card.cloneNode(true);
+                clone.querySelector('#titolo-offerta').innerText = pack.titolo;
+                clone.querySelector('#descrizione-offerta').innerText = pack.descrizione;
+                clone.querySelector('#prezzo-button').innerText = pack.prezzo + ' crediti';
+                clone.querySelector('#prezzo-button').onclick = function() { acquistaPacchetto(pack.prezzo, pack.quantita_carte) }
+                clone.querySelector('#thumbnail').src = pack.thumbnail;
+
+                if (pack.descrizione) {
+                    clone.querySelector('#descrizione-offerta').classList.remove('d-none');
+                }
+
+                clone.classList.remove('d-none');
+                container.appendChild(clone);
+            }
+        }
+
+        async function acquistaPacchetto(prezzo, quantita_carte) {
+            if (utente.crediti < prezzo) {
+                alert("Non hai abbastanza crediti per acquistare questo pacchetto.");
+                return;
+            }
+
+            var buttons = document.querySelectorAll('#prezzo-button');
+            buttons.forEach(button => button.disabled = true);
+            var cards = await getRandomCards(quantita_carte);
+            if (!cards || cards.length == 0) {
+                alert("Errore nella richiesta delle carte.");
+                return;
+            }
+
+            //aggiorna database e localStorage
+            var options = {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(utente)
+            }
+            fetch(`http://localhost:3000/users/${utente._id}`, options)
+            .then(data => {
+                console.log(data)
+                if (data.ok) {
+                    //rimuovi crediti
+                    utente.crediti -= prezzo;
+                    document.querySelector('#navbar-crediti-utente').innerText = utente.crediti;
+                    
+                    //aggiungi le carte all'album dell'utente
+                    cards.forEach(card => {
+                        var albumCard = utente.album.find(albumCard => albumCard.id == card.id);
+                        if (albumCard) {
+                            albumCard.quantita++;
+                        } else {
+                            var albumCard = {
+                                id: card.id,
+                                name: card.name,
+                                thumbnail: card.thumbnail,
+                                quantita: 1
+                            }
+                            utente.album.push(albumCard);
+                        }
+                    });
+                    localStorage.setItem('utente', JSON.stringify(utente));
+                } else {
+                    console.error("Errore nell'aggiornamento dell'utente.");
+                    window.location.reload();
+                }
+            })
+            .catch(error => console.error("Errore nell'aggiornamento dell'utente." + error));
+            
+            //mostra all'utente le carte ottenute
+            const modal = document.getElementById('carte-trovate');
+            const bootstrapModal = new bootstrap.Modal(modal);
+            bootstrapModal.show();
+            popolaModal(cards);
+            buttons.forEach(button => button.disabled = false);
+        }
+
+        function popolaModal(cards) {
+            var emptyCard = document.getElementById('card-figurina');
+            var risultati = document.getElementById('risultati-pacchetto');
+            risultati.innerHTML = '';
+            risultati.appendChild(emptyCard);
+
+            /* //Per testare senza fare chiamate eccessive
+            var cards = await getRandomCards(5);
+            sessionStorage.setItem('test-modal-pacchetti', JSON.stringify(cards)); */
+           
+            /* var cards = JSON.parse(sessionStorage.getItem('test-modal-pacchetti'));
+            var prezzo = 5; */
+            
+            cards.forEach(card => {
+                var clone = emptyCard.cloneNode(true);
+                clone.querySelector('.link-to-scheda').href = 'scheda-eroe.html?id=' + card.id;
+                clone.querySelector('.card-img-top').src = card.thumbnail;
+                clone.querySelector('#nome-eroe').innerText = card.name;
+                clone.classList.remove('d-none');
+                risultati.appendChild(clone);
+            });
+        };
+
+        async function getRandomCards(n) {
+            var cards = [];
+            console.log(n);
+
+            for (let i = 0; i < n; i++) {
+                await fetch('http://localhost:3000/random-character')
+                .then(response => response.json())
+                .then(card => {
+                    if (card) {
+                        cards.push(card)
+                    } else {
+                        console.error("Errore nella richiesta della card.");
+                    }
+                })
+                .catch(error => console.error("Errore nella richiesta della "+ (i+1) + "-esima card."));
+            }
+
+            console.log(cards);
+            return cards;
+        }
+    </script>
+</body>
+</html>

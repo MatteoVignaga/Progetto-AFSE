@@ -1,0 +1,741 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "AFSE API",
+    "description": "Ecco la documentazione dell'API di AFSE",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000/"
+    }
+  ],
+  "paths": {
+    "/": {
+      "get": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/users": {
+      "post": {
+        "description": "",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "description": "Permette di inserire un utente.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/getUserSchema"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/{id}": {
+      "put": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/putUserSchema"
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/users/{user_id}/cards/{card_id}": {
+      "put": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "card_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "description": "Modifica la quantita di una carta.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/putCardSchema"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/offers": {
+      "get": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "post": {
+        "description": "",
+        "responses": {
+          "400": {
+            "description": "Bad Request"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "description": "Aggiungi una offerta di scambio alla collection delle offerte.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/offerSchema"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/offers/{id}": {
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      },
+      "delete": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/offers/{id}/proposte": {
+      "put": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "description": "Fai una proposta ad una offerta di un altro utente.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/propostaSchema"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/offers/{id}/proposte/reject": {
+      "put": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "description": "Rifiuta la proposta di un altro utente alla offerta.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/propostaSchema"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/offers/{id}/proposte/accept": {
+      "put": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "description": "Accetta la proposta di un altro utente alla offerta.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/propostaSchema"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/{id}/offerte": {
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "description": "Aggiungi una offerta di scambio alla lista delle offerte di scambio di un utente.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/offerSchema"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/{user_id}/offerte/{offer_id}": {
+      "delete": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "offer_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/login": {
+      "post": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "example": "any"
+                  },
+                  "password": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/marvel-characters": {
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/marvel-characters/{id}": {
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/marvel-characters/{id}/comics": {
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/marvel-characters/{id}/series": {
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/marvel-characters/{id}/events": {
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/random-character": {
+      "get": {
+        "description": "",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/packs": {
+      "get": {
+        "description": "",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      },
+      "post": {
+        "description": "",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "description": "Aggiungi un pacchetto di carte da vendere agli utenti.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/packSchema"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "getUserSchema": {
+        "type": "object",
+        "properties": {
+          "nome": {
+            "type": "string",
+            "example": "Matteo"
+          },
+          "cognome": {
+            "type": "string",
+            "example": "Vignaga"
+          },
+          "email": {
+            "type": "string",
+            "example": "mvteo@gmail.com"
+          },
+          "password": {
+            "type": "string",
+            "example": "password"
+          },
+          "eroe_preferito": {
+            "type": "string",
+            "example": "Spiderman"
+          },
+          "album": {
+            "type": "array",
+            "example": [],
+            "items": {}
+          },
+          "carte_da_scambiare": {
+            "type": "array",
+            "example": [],
+            "items": {}
+          }
+        },
+        "required": [
+          "nome",
+          "cognome",
+          "email",
+          "password",
+          "eroe_preferito",
+          "album",
+          "carte_da_scambiare"
+        ]
+      },
+      "putUserSchema": {
+        "type": "object",
+        "properties": {
+          "nome": {
+            "type": "string",
+            "example": "Matteo"
+          },
+          "cognome": {
+            "type": "string",
+            "example": "Vignaga"
+          },
+          "email": {
+            "type": "string",
+            "example": "mvteo@gmail.com"
+          },
+          "password": {
+            "type": "string",
+            "example": "password"
+          },
+          "eroe_preferito": {
+            "type": "string",
+            "example": "Spiderman"
+          },
+          "album": {
+            "type": "array",
+            "example": [],
+            "items": {}
+          },
+          "carte_da_scambiare": {
+            "type": "array",
+            "example": [],
+            "items": {}
+          }
+        }
+      },
+      "putCardSchema": {
+        "type": "object",
+        "properties": {
+          "quantita": {
+            "type": "number",
+            "example": 1
+          }
+        }
+      },
+      "offerSchema": {
+        "type": "object",
+        "properties": {
+          "offerente": {
+            "type": "string",
+            "example": "66b48f9839c932492aa49a83"
+          },
+          "descrizione": {
+            "type": "string",
+            "example": "Offerta di scambio"
+          },
+          "carte_offerte": {
+            "type": "array",
+            "example": [],
+            "items": {}
+          },
+          "offerte_ricevute": {
+            "type": "array",
+            "example": [],
+            "items": {}
+          }
+        },
+        "required": [
+          "offerente",
+          "carte_offerte"
+        ]
+      },
+      "propostaSchema": {
+        "type": "object",
+        "properties": {
+          "proponente": {
+            "type": "string",
+            "example": "66b48f9839c932492aa49a83"
+          },
+          "carte_proposte": {
+            "type": "array",
+            "example": [],
+            "items": {}
+          }
+        }
+      },
+      "packSchema": {
+        "type": "object",
+        "properties": {
+          "titolo": {
+            "type": "string",
+            "example": "Pack di carte"
+          },
+          "descrizione": {
+            "type": "string",
+            "example": "Qui puoi descrivere l'offerta di carte, se vuoi"
+          },
+          "prezzo": {
+            "type": "number",
+            "example": 5
+          },
+          "quantita_carte": {
+            "type": "number",
+            "example": 5
+          },
+          "thumbnail": {
+            "type": "string",
+            "example": "base64 di un'immagine"
+          }
+        },
+        "required": [
+          "titolo",
+          "prezzo",
+          "quantita_carte",
+          "thumbnail"
+        ]
+      },
+      "cardSchema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number",
+            "example": 1009718
+          },
+          "name": {
+            "type": "string",
+            "example": "Wolverine"
+          },
+          "description": {
+            "type": "string",
+            "example": "Mutante con artigli di adamantio"
+          },
+          "thumbnail": {
+            "type": "string",
+            "example": "http://i.annihil.us/u/prod/marvel/i/mg/2/60/537bcaef0f6cf.jpg"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "thumbnail"
+        ]
+      }
+    }
+  }
+}
