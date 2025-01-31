@@ -1,0 +1,392 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Mercato delle figurine</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+
+        #contenitore-offerte-utente, #contenitore-carte-duplicate {
+            overflow-x: auto;
+            background-color: #f3f3f3;
+        }
+
+        .selected {
+            border: 4px solid #ff0000;
+        }
+
+        /* div {
+            border: 1px black solid;
+        } */
+    </style>
+</head>
+
+<body>
+    <div class="col" id="navbar-container">
+        <!-- Navbar -->
+        <script src="../javascript/new-navbar.js"></script>
+    </div>
+
+    <div class="container mx-auto m-3">
+         
+        <div class="row">
+            <div class="col">
+                <h1>Mercato</h1>
+                <p>Benvenuto nel mercato! Qui potrai scambiare le tue figurine con quelle degli altri giocatori. <br>
+                Posta la tua offerta, o proponi uno scambio agli altri giocatori.</p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <div class="row">
+                    <div class="col">
+                        <h2>Le tue offerte</h2>
+                        <p>Qui potrai vedere le offerte che hai postato, e modificarle o eliminarle.</p>
+                    </div>
+                </div>
+                
+                <div class="row d-flex flex-nowrap py-2" id="contenitore-offerte-utente">
+                    <div class="col-auto" id="contenitore-pulsante-aggiungi-offerta">
+                        <button id="aggiungi-offerta-button" class="border border-secondary border-2 rounded h-100" data-bs-toggle="modal" data-bs-target="#aggiungi-offerta-modal">
+                            <div id="aggiungi-offerta-button-decorazione">
+                                +
+                            </div>
+                        </button>
+                    </div>
+
+                    <div class="col d-none" id="card-offerta-utente">
+                        <div class="card h-100 hover-red-border" style="max-width: 400px; min-width: 300px;">
+                            <div class="row h-100 g-0">
+                                
+                                <div class="col-md-4">
+                                    <div class="hstack" id="contenitore-thumbnails" style="overflow-x: auto; scroll-snap-type: x mandatory;">
+                                        <!-- thumbnails di tutte le carte dell'offerta -->
+                                    </div>
+                                </div>
+
+                                <div class="col-md-8">
+                                    <div class="card-body">
+                                        <h5 class="card-title" id="titolo-offerta">Offerta da </h5>
+                                        <ul class="list-group list-group-flush" id="lista-carte-offerta">
+                                            <li class="list-group-item d-none" id="list-item-generico">An item</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body py-0">
+                                <p class="d-none" id="descrizione">Descrizione dell'offerta.</p>
+                            </div>
+                            <div class="card-footer d-flex justify-content-between">
+                                <button type="button" class="btn btn-secondary" id="button-scheda-offerta">
+                                    Proposte ricevute: <span class="badge text-bg-primary" id="quantita-proposte">1</span>
+                                </button>
+                                <button class="btn btn-danger" id="button-elimina-offerta">Elimina</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-3">
+            <div class="col">
+                <a href="mercato-scambi-altri-utenti.html" class="link-danger link-underline link-underline-opacity-0"><h2>Offerte degli altri giocatori ></h2></a>
+                <p>Qui potrai vedere le offerte degli altri giocatori, e accettarle o rifiutarle.</p>
+            </div>
+        </div>
+
+    </div>
+
+    <!--Modal per aggiungere offerte-->
+    <div class="modal fade" id="aggiungi-offerta-modal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5">Aggiungi offerta</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="row">
+
+                        <div class="col-8">
+                            <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-2 p-3" id="contenitore-carte-duplicate">
+                                
+                                <div class="col d-none" id="card-duplicata">
+                                    <div class="card card-animated h-100">
+                                        <img src="" class="card-img-top img-fluid object-fit-cover" alt="Icona">
+                                        <div class="card-img-overlay d-flex flex-column justify-content-end">
+                                            <h5 class="card-title text-align-bottom m-0 fs-6 text-truncate" id="nome-eroe">Supereroe</h5>
+                                            <span class="">Quantità: </span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="col-4">
+                            <div class="row">
+                                <div class="col">
+                                    <h3 id="nome-eroe-selezionato">Seleziona le tue carte</h3>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <ul class="list-group list-group-flush" id="lista-carte-selezionate">
+                                        <li class="list-group-item d-none" id="list-item-generico">An item</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <div class="form-floating">
+                                        <textarea class="form-control" placeholder="Descrivi la tua offerta" id="descrizione-offerta"></textarea>
+                                        <label for="descrizione-offerta" class="text-wrap" style="height: 10rem;">Aggiungi una descrizione... </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Chiudi</button>
+                    <button type="button" class="btn btn-danger" onclick="aggiungiOfferta()" data-bs-dismiss="modal">Aggiungi</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+    <script src="../javascript/lib.js"></script>
+    <script>
+        var utente = JSON.parse(localStorage.getItem("utente"));
+
+        if (!utente) {
+            document.querySelector('#aggiungi-offerta-button').disabled = true;
+            document.querySelector('#contenitore-pulsante-aggiungi-offerta').style.height = "250px";
+        } else {
+            popolaModalAggiuntaOfferte();
+            popolaListaOfferte();
+        }
+        
+
+        function popolaModalAggiuntaOfferte() {
+            var carteDuplicate = utente.album.filter(card => card.quantita > 1);
+            var container = document.getElementById("contenitore-carte-duplicate");
+            var card = document.getElementById("card-duplicata");
+            container.innerHTML = "";
+            container.appendChild(card);
+            
+            carteDuplicate.forEach(card => {
+                var clone = document.getElementById("card-duplicata").cloneNode(true);
+                clone.querySelector(".card").id = card.id;
+                clone.querySelector(".card-title").innerHTML = card.name;
+                clone.querySelector(".card-img-top").src = card.thumbnail;
+                clone.querySelector("span").innerHTML += card.quantita;
+                clone.onclick = function() { selectCard(card.id); };
+                clone.classList.remove("d-none");
+                container.appendChild(clone);
+            });
+        }
+
+        function popolaListaOfferte() {
+            var container = document.getElementById("contenitore-offerte-utente");
+            var button = document.getElementById("contenitore-pulsante-aggiungi-offerta");
+            var card = document.getElementById("card-offerta-utente");
+            container.innerHTML = "";
+            container.appendChild(button);
+            container.appendChild(card);
+
+            var offerte = utente.carte_da_scambiare;
+
+            if (offerte.length == 0) {
+                container.style.height = "250px";
+            } else {
+                container.style.height = "auto";
+            }
+
+            offerte.forEach(offerta => {
+                var clone = card.cloneNode(true);
+                var carte = offerta.carte_offerte;
+
+                if (offerta.carta_offerta) return;
+
+                clone.querySelector(".card").id = offerta._id;
+                clone.querySelector("#contenitore-thumbnails").innerHTML = "";
+                carte.forEach(card => {
+                    var img = document.createElement("img");
+                    img.src = card.thumbnail;
+                    img.classList.add("m-1", "rounded", "img-fit-cover");
+                    img.style.width = "150px";
+                    img.style.height = "150px";
+                    img.style.scrollSnapAlign = "start";
+                    clone.querySelector("#contenitore-thumbnails").appendChild(img);
+
+                    var li = document.getElementById("list-item-generico").cloneNode(true);
+                    li.innerHTML = card.name;
+                    li.classList.remove("d-none");
+                    clone.querySelector("#lista-carte-offerta").appendChild(li);
+                });
+                clone.querySelector("#titolo-offerta").innerHTML = "Offerta da " + carte.length + " carte";
+                if (offerta.descrizione) {
+                    clone.querySelector("#descrizione").innerHTML = offerta.descrizione;
+                    clone.querySelector("#descrizione").classList.remove("d-none");
+                }
+                console.log(offerta);
+                clone.querySelector("#quantita-proposte").innerHTML = offerta.offerte_ricevute.length;
+                clone.querySelector("#button-scheda-offerta").onclick = function() { window.location.href = `scheda-offerta.html?id=${offerta._id}`; };
+                clone.querySelector("#button-elimina-offerta").onclick = function() { eliminaOfferta(offerta); };
+                clone.classList.remove("d-none");
+                container.appendChild(clone);
+            });
+        }
+
+        var selectedCards = [];
+        function selectCard(id) {
+            if (selectedCards.includes(id)) {
+                selectedCards = selectedCards.filter(card => card != id);
+                document.getElementById(id).classList.remove('selected');
+            } else {
+                selectedCards.push(id);
+                document.getElementById(id).classList.add('selected');
+            }
+
+            console.log("Carte selezionate: ");
+            console.log(selectedCards);
+
+            // Aggiorna lista carte selezionate
+            visualizzaCarteSelezionate();
+        }
+
+        function visualizzaCarteSelezionate() {
+            var lista = document.getElementById("lista-carte-selezionate");
+            var item = document.getElementById("list-item-generico").cloneNode(true);
+            lista.innerHTML = "";
+            lista.appendChild(item);
+
+            for (var i = 0; i < selectedCards.length; i++) {
+                var id = selectedCards[i];
+                var card = utente.album.find(card => card.id == id);
+                var clone = item.cloneNode(true);
+                clone.innerHTML = card.name;
+                clone.classList.remove("d-none");
+                clone.id = "";
+                lista.appendChild(clone);
+            }
+        }
+
+        /*
+        Operazione complessa:
+        1. Registra offerta nel db
+        2. Aggiungi offerta all'utente in db
+        3. Aggiungi offerta all'utente in local
+        4. Riduci la quantità della carta selezionata in locale ed in db
+        */
+        async function aggiungiOfferta() {
+
+            if (selectedCards.length == 0) {
+                alert("Seleziona almeno una carta.");
+                return;
+            }
+
+            console.log("Aggiungi offerta: ");
+            var offerta = {
+                offerente: utente._id,
+                descrizione: document.getElementById("descrizione-offerta").value,
+                offerte_ricevute: [],
+                carte_offerte: selectedCards.map(id => utente.album.find(card => card.id == id))
+            };
+            console.log(offerta);
+
+            var options = {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(offerta)
+            }
+
+            fetch("http://localhost:3000/offers", options)
+            .then(async response => {
+                if (response.ok) {
+                    console.log("Offerta aggiunta con successo.");
+                    var inserted = await response.json(); //inserted contiene l'id dell'offerta inserita nel db
+
+                    //update local storage: aggiunta offerta e riduzione delle carte messe sul mercato
+                    offerta._id = inserted.insertedId;
+                    utente.carte_da_scambiare.push(offerta);
+                    offerta.carte_offerte.forEach(card => {
+                        var cardIndex = utente.album.findIndex(c => c.id == card.id);
+                        utente.album[cardIndex].quantita--;
+                    });
+                    localStorage.setItem("utente", JSON.stringify(utente));
+                    popolaListaOfferte();
+                    popolaModalAggiuntaOfferte();
+
+                    //svuota carte selezionate per aggiunta offerte successive
+                    selectedCards = [];
+                    visualizzaCarteSelezionate();
+                } else {
+                    console.error("Errore nell'aggiunta dell'offerta.");
+                    alert("Abbiamo riscontrato un errore durante l'aggiunta dell'offerta.");
+                }
+            })
+            .catch(error => console.error(error));
+        }
+
+        async function eliminaOfferta(offerta) {
+            /*
+            Operazione complessa:
+            - Elimina offerta dal db
+            - Elimina offerta dall'utente in db
+            - Elimina offerta dall'utente in local
+            - Elimina offerte ricevute per questa offerta (restituendo le carte agli altri utenti)
+            - Aumenta quantità della carta in local ed in db
+            */
+            console.log("Elimina offerta: ");
+            console.log(offerta);
+
+            var options = {
+                method: 'DELETE'
+            }
+
+            fetch(`http://localhost:3000/offers/${offerta._id}`, options)
+            .then(async res => {
+                
+                if (res.ok) {
+                    res = await res.json();
+                    console.log("Eliminazione offerta: ");
+                    console.log(res);
+
+                    //aggiorna local storage: rimozione offerta e aumento delle carte rimosse dal mercato
+                    utente.carte_da_scambiare = utente.carte_da_scambiare.filter(o => o._id != offerta._id);
+                    offerta.carte_offerte.forEach(card => {
+                        var cardIndex = utente.album.findIndex(c => c.id == card.id);
+                        utente.album[cardIndex].quantita++;
+                    });
+                    localStorage.setItem("utente", JSON.stringify(utente));
+                    popolaListaOfferte();
+                    popolaModalAggiuntaOfferte();
+
+                } else {
+                    console.error("Errore durante l'eliminazione dell'offerta.");
+                }
+            })
+            .catch(error => console.error(error));
+        }
+
+    </script>
+</body>
+
+</html>
